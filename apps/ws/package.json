@@ -1,0 +1,16 @@
+{
+  "name": "ws",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch index.ts",
+    "start": "node index.ts"
+  },
+  "dependencies": {
+    "@repo/db": "workspace:*",
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.18.2"
+  }
+}
