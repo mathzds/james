@@ -1,9 +1,21 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import type { Message } from '@repo/db'
+import { SendIcon } from 'lucide-react'
+import type { Message as ChatMessage } from '@repo/db'
+import { Bubble, BubbleContent } from '@/components/ui/bubble'
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group'
+import { Message, MessageContent } from '@/components/ui/message'
+import {
+  MessageScroller,
+  MessageScrollerButton,
+  MessageScrollerContent,
+  MessageScrollerItem,
+  MessageScrollerProvider,
+  MessageScrollerViewport,
+} from '@/components/ui/message-scroller'
 
-export function Chat({ initial }: { initial: Message[] }) {
+export function Chat({ initial }: { initial: ChatMessage[] }) {
   const [msgs, setMsgs] = useState(initial)
   const socket = useRef<WebSocket>(null)
 
@@ -19,11 +31,36 @@ export function Chat({ initial }: { initial: Message[] }) {
   }
 
   return (
-    <main>
-      <ul>{msgs.map((m) => <li key={m.id}>{m.text}</li>)}</ul>
+    <main className="flex h-dvh flex-col gap-4 py-8">
+      <MessageScrollerProvider autoScroll>
+        <MessageScroller>
+          <MessageScrollerViewport>
+            <MessageScrollerContent>
+              {msgs.map((m) => (
+                <MessageScrollerItem key={m.id} messageId={String(m.id)}>
+                  <Message>
+                    <MessageContent>
+                      <Bubble variant="muted">
+                        <BubbleContent>{m.text}</BubbleContent>
+                      </Bubble>
+                    </MessageContent>
+                  </Message>
+                </MessageScrollerItem>
+              ))}
+            </MessageScrollerContent>
+          </MessageScrollerViewport>
+          <MessageScrollerButton />
+        </MessageScroller>
+      </MessageScrollerProvider>
       <form action={send}>
-        <input name="text" required autoComplete="off" aria-label="Mensagem" />
-        <button>Enviar</button>
+        <InputGroup>
+          <InputGroupInput name="text" required autoComplete="off" placeholder="Mensagem" aria-label="Mensagem" />
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton type="submit" size="icon-xs" aria-label="Enviar">
+              <SendIcon />
+            </InputGroupButton>
+          </InputGroupAddon>
+        </InputGroup>
       </form>
     </main>
   )

@@ -1,6 +1,8 @@
 # james
 
-pnpm monorepo: Next.js 16 + Drizzle ORM (Postgres) + WebSocket server (`ws`).
+pnpm monorepo: Next.js 16 + shadcn/ui (Tailwind v4) + Drizzle ORM (Postgres) + WebSocket server (`ws`).
+
+Add UI components: `pnpm dlx shadcn@latest add <component> -c apps/web`.
 
 ```
 apps/web      Next.js (App Router). Page reads DB in a Server Component, client connects to WS.
